@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AA6B5D821C15F62A0015A478 /* WebViewPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA6B5D811C15F62A0015A478 /* WebViewPopover.xib */; };
 		AACED8301C11E36800A6B059 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AACED82F1C11E36800A6B059 /* main.m */; };
 		AACED8331C11E36800A6B059 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AACED8321C11E36800A6B059 /* AppDelegate.m */; };
 		AACED8361C11E36800A6B059 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AACED8351C11E36800A6B059 /* ViewController.m */; };
@@ -15,9 +16,16 @@
 		AACED83E1C11E36800A6B059 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AACED83C1C11E36800A6B059 /* LaunchScreen.storyboard */; };
 		AACED8461C11E38100A6B059 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = AACED8451C11E38100A6B059 /* logo.png */; };
 		AACED8481C12051100A6B059 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACED8471C12051100A6B059 /* MapKit.framework */; };
+		AACED8721C1522E600A6B059 /* Almond.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = AACED86E1C1522E600A6B059 /* Almond.jpeg */; };
+		AACED8731C1522E600A6B059 /* Eataly.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = AACED86F1C1522E600A6B059 /* Eataly.jpeg */; };
+		AACED8741C1522E600A6B059 /* Junoon.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = AACED8701C1522E600A6B059 /* Junoon.jpeg */; };
+		AACED8751C1522E600A6B059 /* ShakeShack.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = AACED8711C1522E600A6B059 /* ShakeShack.jpeg */; };
+		AACED8771C152B0400A6B059 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACED8761C152B0400A6B059 /* WebKit.framework */; };
+		AACED87A1C1556BD00A6B059 /* webViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AACED8791C1556BD00A6B059 /* webViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		AA6B5D811C15F62A0015A478 /* WebViewPopover.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebViewPopover.xib; sourceTree = "<group>"; };
 		AACED82B1C11E36800A6B059 /* MapApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MapApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AACED82F1C11E36800A6B059 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		AACED8311C11E36800A6B059 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -30,6 +38,13 @@
 		AACED83F1C11E36800A6B059 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AACED8451C11E38100A6B059 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
 		AACED8471C12051100A6B059 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		AACED86E1C1522E600A6B059 /* Almond.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Almond.jpeg; sourceTree = "<group>"; };
+		AACED86F1C1522E600A6B059 /* Eataly.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Eataly.jpeg; sourceTree = "<group>"; };
+		AACED8701C1522E600A6B059 /* Junoon.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Junoon.jpeg; sourceTree = "<group>"; };
+		AACED8711C1522E600A6B059 /* ShakeShack.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = ShakeShack.jpeg; sourceTree = "<group>"; };
+		AACED8761C152B0400A6B059 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		AACED8781C1556BD00A6B059 /* webViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = webViewController.h; sourceTree = "<group>"; };
+		AACED8791C1556BD00A6B059 /* webViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = webViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,6 +52,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AACED8771C152B0400A6B059 /* WebKit.framework in Frameworks */,
 				AACED8481C12051100A6B059 /* MapKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -47,6 +63,7 @@
 		AACED8221C11E36800A6B059 = {
 			isa = PBXGroup;
 			children = (
+				AACED8761C152B0400A6B059 /* WebKit.framework */,
 				AACED8471C12051100A6B059 /* MapKit.framework */,
 				AACED82D1C11E36800A6B059 /* MapApp */,
 				AACED82C1C11E36800A6B059 /* Products */,
@@ -68,6 +85,9 @@
 				AACED8321C11E36800A6B059 /* AppDelegate.m */,
 				AACED8341C11E36800A6B059 /* ViewController.h */,
 				AACED8351C11E36800A6B059 /* ViewController.m */,
+				AACED8781C1556BD00A6B059 /* webViewController.h */,
+				AACED8791C1556BD00A6B059 /* webViewController.m */,
+				AA6B5D811C15F62A0015A478 /* WebViewPopover.xib */,
 				AACED8371C11E36800A6B059 /* Main.storyboard */,
 				AACED83A1C11E36800A6B059 /* Assets.xcassets */,
 				AACED83C1C11E36800A6B059 /* LaunchScreen.storyboard */,
@@ -80,6 +100,10 @@
 		AACED82E1C11E36800A6B059 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				AACED86E1C1522E600A6B059 /* Almond.jpeg */,
+				AACED86F1C1522E600A6B059 /* Eataly.jpeg */,
+				AACED8701C1522E600A6B059 /* Junoon.jpeg */,
+				AACED8711C1522E600A6B059 /* ShakeShack.jpeg */,
 				AACED8451C11E38100A6B059 /* logo.png */,
 				AACED82F1C11E36800A6B059 /* main.m */,
 			);
@@ -150,9 +174,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				AACED8461C11E38100A6B059 /* logo.png in Resources */,
+				AA6B5D821C15F62A0015A478 /* WebViewPopover.xib in Resources */,
+				AACED8751C1522E600A6B059 /* ShakeShack.jpeg in Resources */,
+				AACED8741C1522E600A6B059 /* Junoon.jpeg in Resources */,
 				AACED83E1C11E36800A6B059 /* LaunchScreen.storyboard in Resources */,
 				AACED83B1C11E36800A6B059 /* Assets.xcassets in Resources */,
+				AACED8721C1522E600A6B059 /* Almond.jpeg in Resources */,
 				AACED8391C11E36800A6B059 /* Main.storyboard in Resources */,
+				AACED8731C1522E600A6B059 /* Eataly.jpeg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -166,6 +195,7 @@
 				AACED8361C11E36800A6B059 /* ViewController.m in Sources */,
 				AACED8331C11E36800A6B059 /* AppDelegate.m in Sources */,
 				AACED8301C11E36800A6B059 /* main.m in Sources */,
+				AACED87A1C1556BD00A6B059 /* webViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -312,6 +342,7 @@
 				AACED8441C11E36800A6B059 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
