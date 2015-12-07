@@ -55,35 +55,42 @@
 //                aView.image = [UIImage imageNamed:@"logo.png"];
 //                aView.centerOffset = CGPointMake(10, -20);
                 
-                
-                MKLocalSearchRequest *request = [[MKLocalSearchRequest alloc] init];
-                request.naturalLanguageQuery = @"restaurant";
-                request.region = self.mapView.region;
-                
-                self.currentAnnotations = [NSMutableArray new];
-                
-                MKLocalSearch *localSearch = [[MKLocalSearch alloc] initWithRequest:request];
-                [localSearch startWithCompletionHandler:^(MKLocalSearchResponse * _Nullable response, NSError * _Nullable error) {
-                    if (error){
-                        NSLog(@"Error searching for local restaurants %@", error.localizedDescription);
-                    } else {
-                        [response.mapItems enumerateObjectsUsingBlock:^(MKMapItem * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                            MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
-                            annotation.coordinate = obj.placemark.location.coordinate;
-                            annotation.title = obj.name;
-                            annotation.subtitle = obj.phoneNumber;
-                            
-                            [self.mapView addAnnotation:annotation];
-                            [self.currentAnnotations addObject:annotation];
-                        }];
-                    }
-                }];
             }
         }
     }];
+    WaitForNetworkToFinishDelegate *waiting = [[WaitForNetworkToFinishDelegate alloc] init];
+    waiting.delegate = self;
+    [waiting startToWaitForNetwork];
+    
     
     UITapGestureRecognizer *tapToDismissKeyboard = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboarda)];
     [self.view addGestureRecognizer:tapToDismissKeyboard];
+}
+
+-(void) onceNetworkComplete
+{
+    MKLocalSearchRequest *request = [[MKLocalSearchRequest alloc] init];
+    request.naturalLanguageQuery = @"restaurant";
+    request.region = self.mapView.region;
+    
+    self.currentAnnotations = [NSMutableArray new];
+    
+    MKLocalSearch *localSearch = [[MKLocalSearch alloc] initWithRequest:request];
+    [localSearch startWithCompletionHandler:^(MKLocalSearchResponse * _Nullable response, NSError * _Nullable error) {
+        if (error){
+            NSLog(@"Error searching for local restaurants %@", error.localizedDescription);
+        } else {
+            for (MKMapItem *obj in response.mapItems){
+                MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
+                annotation.coordinate = obj.placemark.location.coordinate;
+                annotation.title = obj.name;
+                annotation.subtitle = obj.phoneNumber;
+                [self.mapView addAnnotation:annotation];
+                [self.currentAnnotations addObject:annotation];
+            }
+        }
+    }];
+    [self.view reloadInputViews];
 }
 
 -(void)dismissKeyboarda

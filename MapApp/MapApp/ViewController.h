@@ -10,8 +10,9 @@
 #import <MapKit/MapKit.h>
 #import <WebKit/WebKit.h>
 #import "webViewController.h"
+#import "WaitForNetworkToFinishDelegate.h"
 
-@interface ViewController : UIViewController <MKMapViewDelegate, UISearchBarDelegate>
+@interface ViewController : UIViewController <MKMapViewDelegate, UISearchBarDelegate, WaitForNetworkToFinishDelegate>
 @property (weak, nonatomic) IBOutlet UIImageView *icon;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *mapSegControl;

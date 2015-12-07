@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AA601EDD1C1621C800CE0FFD /* WaitForNetworkToFinishDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AA601EDC1C1621C800CE0FFD /* WaitForNetworkToFinishDelegate.m */; };
 		AA6B5D821C15F62A0015A478 /* WebViewPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA6B5D811C15F62A0015A478 /* WebViewPopover.xib */; };
 		AACED8301C11E36800A6B059 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AACED82F1C11E36800A6B059 /* main.m */; };
 		AACED8331C11E36800A6B059 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AACED8321C11E36800A6B059 /* AppDelegate.m */; };
@@ -25,6 +26,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		AA601EDB1C1621C800CE0FFD /* WaitForNetworkToFinishDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaitForNetworkToFinishDelegate.h; sourceTree = "<group>"; };
+		AA601EDC1C1621C800CE0FFD /* WaitForNetworkToFinishDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WaitForNetworkToFinishDelegate.m; sourceTree = "<group>"; };
 		AA6B5D811C15F62A0015A478 /* WebViewPopover.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebViewPopover.xib; sourceTree = "<group>"; };
 		AACED82B1C11E36800A6B059 /* MapApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MapApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AACED82F1C11E36800A6B059 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -87,6 +90,8 @@
 				AACED8351C11E36800A6B059 /* ViewController.m */,
 				AACED8781C1556BD00A6B059 /* webViewController.h */,
 				AACED8791C1556BD00A6B059 /* webViewController.m */,
+				AA601EDB1C1621C800CE0FFD /* WaitForNetworkToFinishDelegate.h */,
+				AA601EDC1C1621C800CE0FFD /* WaitForNetworkToFinishDelegate.m */,
 				AA6B5D811C15F62A0015A478 /* WebViewPopover.xib */,
 				AACED8371C11E36800A6B059 /* Main.storyboard */,
 				AACED83A1C11E36800A6B059 /* Assets.xcassets */,
@@ -195,6 +200,7 @@
 				AACED8361C11E36800A6B059 /* ViewController.m in Sources */,
 				AACED8331C11E36800A6B059 /* AppDelegate.m in Sources */,
 				AACED8301C11E36800A6B059 /* main.m in Sources */,
+				AA601EDD1C1621C800CE0FFD /* WaitForNetworkToFinishDelegate.m in Sources */,
 				AACED87A1C1556BD00A6B059 /* webViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
