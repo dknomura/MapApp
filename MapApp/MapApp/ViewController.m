@@ -7,10 +7,14 @@
 //
 
 #import "ViewController.h"
+#import <CoreLocation/CoreLocation.h>
 
 @interface ViewController ()
 @property (strong, nonatomic) NSString *currentRestaurantName;
 @property (strong, nonatomic) NSMutableArray *currentAnnotations;
+@property (nonatomic) CLLocationCoordinate2D turnToTechLocation;
+@property (strong, nonatomic) CLLocationManager *locationManager;
+@property (nonatomic) BOOL didSearchRestaurants;
 
 @end
 
@@ -18,89 +22,47 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
+    self.locationManager =[[CLLocationManager alloc] init];
+    [self.locationManager requestWhenInUseAuthorization];
+    [self.locationManager startUpdatingLocation];
+
+    self.mapView.delegate = self;
+    self.searchBar.delegate = self;
+
+    self.mapView.showsUserLocation = YES;
     self.icon.image = [UIImage imageNamed:@"logo.png"];
     
-    NSArray *segmentTitles =  @[@"Standard", @"Hybrid", @"Satellite"];
-    for (int i = 0; i<segmentTitles.count; i++) {
-        [self.mapSegControl setTitle:segmentTitles[i] forSegmentAtIndex:i];
-    }
-    
-    CLGeocoder *turnToTechLocation = [[CLGeocoder alloc]init];
-    
+
     self.title = @"MAPPSS!";
-    
-    self.searchBar.delegate = self;
-    
-//    NSDictionary *tttAndNearbyRestaurantsDictionary = [NSDictionary dictionaryWithObjects:@[@"27 W 24th St, New York, NY", @"200 5TH AVE, New York, NY", @"E 23rd St & Madison Ave, New York, NY", @"12 E 22nd St, New York, NY 10010"] forKeys:@[@"Junoon", @"Eataly", @"Shake Shack", @"Almond"]];
-    
-//    NSMutableDictionary *tttAndNearbyRestaurantsDictionary = 
-    
+
+    CLGeocoder *turnToTechLocation = [[CLGeocoder alloc]init];
     [turnToTechLocation geocodeAddressString:@"184 5th Ave, New York, NY" completionHandler:^(NSArray<CLPlacemark *> * _Nullable placemarks, NSError * _Nullable error) {
         if (error){
             NSLog(@"Error getting location, %@, %@", error.localizedDescription, error.userInfo);
         } else{
             if (placemarks.count > 0){
-                MKCoordinateRegion turnToTechRegion = MKCoordinateRegionMakeWithDistance(placemarks[0].location.coordinate, 300, 300);
-                [self.mapView setRegion:turnToTechRegion animated:YES];
+                self.turnToTechLocation = placemarks[0].location.coordinate;
+                [self.mapView setRegion:MKCoordinateRegionMakeWithDistance(self.turnToTechLocation, 3000, 3000) animated:YES];
                 
                 MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
-                annotation.title = [NSString stringWithFormat:@"TurnToTech\n %@", placemarks[0].name];
+                annotation.title = @"TurnToTech";
+                annotation.subtitle = placemarks[0].name;
                 annotation.coordinate = placemarks[0].location.coordinate;
                 
                 [self.mapView addAnnotation:annotation];
-                
-                self.mapView.delegate = self;
-//                MKAnnotationView *aView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"MyAnnotation"];
-//                aView.image = [UIImage imageNamed:@"logo.png"];
-//                aView.centerOffset = CGPointMake(10, -20);
-                
             }
         }
     }];
-    WaitForNetworkToFinishDelegate *waiting = [[WaitForNetworkToFinishDelegate alloc] init];
-    waiting.delegate = self;
-    [waiting startToWaitForNetwork];
-    
-    
     UITapGestureRecognizer *tapToDismissKeyboard = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboarda)];
     [self.view addGestureRecognizer:tapToDismissKeyboard];
 }
 
--(void) onceNetworkComplete
-{
-    MKLocalSearchRequest *request = [[MKLocalSearchRequest alloc] init];
-    request.naturalLanguageQuery = @"restaurant";
-    request.region = self.mapView.region;
-    
-    self.currentAnnotations = [NSMutableArray new];
-    
-    MKLocalSearch *localSearch = [[MKLocalSearch alloc] initWithRequest:request];
-    [localSearch startWithCompletionHandler:^(MKLocalSearchResponse * _Nullable response, NSError * _Nullable error) {
-        if (error){
-            NSLog(@"Error searching for local restaurants %@", error.localizedDescription);
-        } else {
-            for (MKMapItem *obj in response.mapItems){
-                MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
-                annotation.coordinate = obj.placemark.location.coordinate;
-                annotation.title = obj.name;
-                annotation.subtitle = obj.phoneNumber;
-                [self.mapView addAnnotation:annotation];
-                [self.currentAnnotations addObject:annotation];
-            }
-        }
-    }];
-    [self.view reloadInputViews];
-}
 
--(void)dismissKeyboarda
-{
-    [self.searchBar resignFirstResponder];
-}
+#pragma mark - Search bar delegate methods and Keyboard dismissal
 
 -(void) searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-    [self.mapView removeAnnotations:self.currentAnnotations];
     MKLocalSearchRequest *request = [[MKLocalSearchRequest alloc] init];
     request.naturalLanguageQuery = self.searchBar.text;
     request.region = self.mapView.region;
@@ -109,16 +71,27 @@
     [localSearch startWithCompletionHandler:^(MKLocalSearchResponse * _Nullable response, NSError * _Nullable error) {
         if (error){
             NSLog(@"Error with local search, %@", error.localizedDescription);
-        } else {
-            [response.mapItems enumerateObjectsUsingBlock:^(MKMapItem * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            if (response.mapItems.count == 0) {
+                UIAlertController *noLocationAlert = [UIAlertController alertControllerWithTitle: nil message:@"No Locations Found" preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction *confirmation = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    [self dismissViewControllerAnimated:YES completion:nil];
+                }];
+                [noLocationAlert addAction:confirmation];
+                [self presentViewController:noLocationAlert animated:YES completion:nil];
+            }
+        }else {
+            [self.mapView removeAnnotations:self.currentAnnotations];
+            
+            for(MKMapItem *obj in response.mapItems){
                 MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
                 annotation.coordinate = obj.placemark.location.coordinate;
                 annotation.title = obj.name;
+                NSLog(@"Got.. %@, city: %@", obj.name, obj.placemark.locality);
                 annotation.subtitle = obj.phoneNumber;
                 
                 [self.mapView addAnnotation:annotation];
                 [self.currentAnnotations addObject:annotation];
-            }];
+            }
         }
     }];
     self.searchBar.alpha = .5;
@@ -126,27 +99,70 @@
 
 }
 
+-(BOOL) searchBarShouldBeginEditing:(UISearchBar *)searchBar
+{
+    searchBar.alpha = 1;
+    return true;
+}
 
-//    NSDictionary *restaurantAddressAndName = [NSDictionary dictionaryWithObjects:@[@"27 W 24th St, New York, NY", @"200 5TH AVE, New York, NY", @"E 23rd St & Madison Ave, New York, NY", @"12 E 22nd St, New York, NY 10010"] forKeys:@[@"Junoon", @"Eataly", @"ShakeShack", @"Almond"]];
-//    
-//    for (NSString *name in restaurantAddressAndName){
-//        NSString *address = [restaurantAddressAndName objectForKey:name];
-//        CLGeocoder *geocoder = [[CLGeocoder alloc] init];
-//        [geocoder geocodeAddressString:address completionHandler:^(NSArray<CLPlacemark *> * _Nullable placemarks, NSError * _Nullable error) {
-//            if (error){
-//                NSLog(@"error getting coordinates for %@ at %@ \n%@, %@", name, address, error.localizedDescription, error.userInfo);
-//            } else{
-//                MKPointAnnotation *pointAnnotation = [[MKPointAnnotation alloc] init];
-//                pointAnnotation.coordinate = placemarks[0].location.coordinate;
-//                pointAnnotation.title = name;
-//                pointAnnotation.subtitle = placemarks[0].name;
-//                self.currentRestaurantName = name;
-//                [self.mapView addAnnotation:pointAnnotation];
-//            }
-//            
-//        }];
+
+-(void)dismissKeyboarda
+{
+    if ([self.searchBar isFirstResponder]) {
+        [self.searchBar resignFirstResponder];
+        self.searchBar.alpha = .5;
+    }
+}
+
+
+#pragma mark - MapView delegate methods
+-(void) mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
+{
+    if (!self.didSearchRestaurants) {
+        MKLocalSearchRequest *request = [[MKLocalSearchRequest alloc] init];
+        request.naturalLanguageQuery = @"restaurant";
+        request.region = self.mapView.region;
+        
+        self.currentAnnotations = [NSMutableArray new];
+        
+        MKLocalSearch *localSearch = [[MKLocalSearch alloc] initWithRequest:request];
+        [localSearch startWithCompletionHandler:^(MKLocalSearchResponse * _Nullable response, NSError * _Nullable error) {
+            if (error){
+                NSLog(@"Error searching for local restaurants %@", error.localizedDescription);
+            } else {
+                
+                if([NSThread isMainThread]){
+                    NSLog(@"In Main Thread");
+                }
+                else {
+                    NSLog(@"Not in Main Thread");
+                }
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    for (MKMapItem *obj in response.mapItems){
+                        MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
+                        annotation.coordinate = obj.placemark.location.coordinate;
+                        annotation.title = obj.name;
+                        annotation.subtitle = obj.phoneNumber;
+                        [self.mapView addAnnotation:annotation];
+                        [self.currentAnnotations addObject:annotation];
+                    }
+                });
+            }
+        }];
+    }
+    if (!self.didSearchRestaurants) {
+        self.didSearchRestaurants = TRUE;
+    }
+    mapView.centerCoordinate = userLocation.location.coordinate;
+}
+
+-(void) mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray<MKAnnotationView *> *)views
+{
+//    if ([views[0].annotation.title isEqualToString:@"TurnToTech"]) {
+// 
 //    }
-    // Do any additional setup after loading the view, typically from a nib.
+}
 
 
 -(MKAnnotationView*) mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation
@@ -169,9 +185,9 @@
             pinAnnotationView.animatesDrop = YES;
             pinAnnotationView.canShowCallout = YES;
             
-            UIButton *leftButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+            UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
 //            [leftButton addTarget:self action:@selector(calloutWebsiteView) forControlEvents:UIControlEventTouchUpInside];
-            pinAnnotationView.rightCalloutAccessoryView = leftButton;
+            pinAnnotationView.rightCalloutAccessoryView = rightButton;
             
             UIImage *iconImage = [UIImage imageNamed:[NSString stringWithFormat: @"%@.jpeg", annotation.title]];
             UIImageView *iconImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 35, 35)];
@@ -183,47 +199,26 @@
     return nil;
 }
 
--(BOOL) searchBarShouldBeginEditing:(UISearchBar *)searchBar
-{
-    searchBar.alpha = 1;
-    return true;
-}
+
 
 -(void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
 {
-    
     MKPointAnnotation *annotation = view.annotation;
     UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     webViewController *webviewController = [storyBoard instantiateViewControllerWithIdentifier:@"webViewController"];
     webviewController.currentRestaurantName = annotation.title;
 //    webviewController.backToMapViewController = self;
-
     
     [self.navigationController pushViewController:webviewController animated:YES];
 }
 
-//
-//-(void)calloutWebsiteView
-//{
-//    UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//    webViewController *webviewController = [storyBoard instantiateViewControllerWithIdentifier:@"webViewController"];
-//    
-//    
-//    webviewController.currentRestaurantName = self.currentRestaurantName;
-//
-//    [self presentViewController:webviewController animated:YES completion:^{
-//    }];
-//}
+
 
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-
-- (IBAction)search:(id)sender {
 }
 
 - (IBAction)mapTypeSwitch:(id)sender

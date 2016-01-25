@@ -18,6 +18,5 @@
 
 - (IBAction)forwardInBrowser:(id)sender;
 - (IBAction)backInBrowser:(id)sender;
-- (IBAction)backToMap:(id)sender;
 
 @end

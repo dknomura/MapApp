@@ -67,11 +67,11 @@
 {
     [self.webView goBack];
 }
-
-- (IBAction)backToMap:(id)sender
-{
-    
-    [self presentViewController:self.backToMapViewController animated:YES completion:^{
-    }];
-}
+//
+//- (IBAction)backToMap:(id)sender
+//{
+//    
+//    [self presentViewController:self.backToMapViewController animated:YES completion:^{
+//    }];
+//}
 @end

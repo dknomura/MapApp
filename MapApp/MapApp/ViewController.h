@@ -12,13 +12,13 @@
 #import "webViewController.h"
 #import "WaitForNetworkToFinishDelegate.h"
 
-@interface ViewController : UIViewController <MKMapViewDelegate, UISearchBarDelegate, WaitForNetworkToFinishDelegate>
+@interface ViewController : UIViewController <MKMapViewDelegate, UISearchBarDelegate>
 @property (weak, nonatomic) IBOutlet UIImageView *icon;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *mapSegControl;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 
-- (IBAction)search:(id)sender;
+//- (IBAction)search:(id)sender;
 
 - (IBAction)mapTypeSwitch:(id)sender;
 
